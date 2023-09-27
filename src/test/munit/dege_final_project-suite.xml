@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="dege_final_project-suite.xml" />
+	<munit:test name="get:\employees:dege_final_project-config-test" doc:id="c173cb70-7a4f-4b26-b211-ca561a15b5e2" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Consume" doc:id="fba2cb95-a50b-41ea-9839-a9ba89037756" processor="wsc:consume">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="bbf8a662-dbe6-429e-93a4-4ef65f234a58" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="c7e07eb5-1b1d-4684-b777-77d35d30c87e" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getemployeesdegefinalprojectconfigtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="55f61d06-e850-47de-85ee-35a0ac05bd15" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getemployeesdegefinalprojectconfigtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="d77dede8-f16d-4af3-9164-0cafd1921b04" >
+				<munit:payload value="#[readUrl('classpath://getemployeesdegefinalprojectconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getemployeesdegefinalprojectconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getemployeesdegefinalprojectconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\employees:dege_final_project-config" doc:id="c26b7f7b-9362-4a0d-bc1b-46b85c50641b" name="get:\employees:dege_final_project-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="758ba735-74bd-46d4-9508-b664605d9fde" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getemployeesdegefinalprojectconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="20634da5-731e-4cf2-8dad-81a587356933" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="40978699-d0b9-4fd8-9483-ac9f45582090" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Consume" doc:id="168d877f-74f5-49dd-a1b7-ebab91eda8c5" processor="wsc:consume" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="bbf8a662-dbe6-429e-93a4-4ef65f234a58" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
